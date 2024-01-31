@@ -2,9 +2,11 @@ package com.example.tvtcsknow.controller;
 
 import com.example.tvtcsknow.model.Product;
 import com.example.tvtcsknow.service.ProductService;
+import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
+import org.mockito.MockitoAnnotations;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
@@ -12,7 +14,6 @@ import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import java.util.Arrays;
 
 import static org.mockito.Mockito.*;
-import static org.mockito.MockitoAnnotations.initMocks;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -27,9 +28,14 @@ public class ProductControllerTest {
 
     @BeforeEach
     public void setUp() {
-        initMocks(this);
+        MockitoAnnotations.openMocks(this);
         productController = new ProductController(mockProductService);
         mockMvc = MockMvcBuilders.standaloneSetup(productController).build();
+    }
+
+    @AfterAll
+    public static void tearDown() throws Exception {
+        MockitoAnnotations.openMocks(ProductControllerTest.class).close();
     }
 
     @Test

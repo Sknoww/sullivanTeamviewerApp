@@ -3,10 +3,11 @@ package com.example.tvtcsknow.service;
 import com.example.tvtcsknow.model.OrderItem;
 import com.example.tvtcsknow.repository.OrderItemRepository;
 import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.context.ContextConfiguration;
+import org.testcontainers.junit.jupiter.Testcontainers;
 
 import java.util.Arrays;
 import java.util.Optional;
@@ -14,9 +15,10 @@ import java.util.Optional;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.*;
 
-@Disabled
 @SpringBootTest
-public class OrderItemServiceTest {
+@ContextConfiguration(initializers = {OrderItemServiceTest.Initializer.class})
+@Testcontainers
+public class OrderItemServiceTest extends BaseServiceTest {
 
     @Mock
     private OrderItemRepository orderItemRepository;
