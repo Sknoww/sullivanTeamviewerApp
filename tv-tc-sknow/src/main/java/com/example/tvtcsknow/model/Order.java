@@ -11,18 +11,16 @@ import java.util.List;
 @Data
 @Entity
 @Table(name = "order")
+@Getter
+@Setter
 @NoArgsConstructor
 public class Order {
 
     @Id
-    @Getter
-    @Setter
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id", nullable = false)
     private long id;
 
-    @Getter
-    @Setter
     @OneToMany(mappedBy = "order", cascade = CascadeType.ALL)
     private List<OrderItem> orderItems;
 
