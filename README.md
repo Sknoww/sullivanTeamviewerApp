@@ -7,6 +7,11 @@ Hunter Sullivan's Programming Challenge for Teamviewer
 
 </div>
 
+## Description
+This is a REST API that allows for the management of products, orders and order-items created for Hunter Sullivan's programming challenge for Teamviewer.
+Since this was a programming challenge, the Dockerfiles and docker-compose.yml files were kept fairly simple but could be expanded upon by adding different envs, build options, etc.
+The application was created using Java, Spring Boot, and Maven. The database used is PostreSQL, which is an in-memory database hosted using Docker.
+
 ## Prerequisites
 - Docker installed and running
 - (Optional) Maven and Java installed and running (Only necessary if you want to run specific Maven commands. i.e. mvn clean install, mvn clean package, etc.)
@@ -19,10 +24,7 @@ localhost:8080/v3/api-docs
 
 ## Installation
 
-```sh
-wget https://github.com/Sknoww/sullivanTeamviewerApp/archive/master.zip
-```
-### or
+### Download
 ```sh
 curl -L -O https://github.com/Sknoww/sullivanTeamviewerApp/archive/master.zip
 ```
@@ -31,20 +33,36 @@ Manual download:
 [Click Here](https://github.com/Sknoww/sullivanTeamviewerApp/archive/master.zip)
 
 Once the download is complete, be sure to extract the zip.
+#### Windows (CMD)
+```sh
+tar -xf master.zip
+```
+#### Mac
+```sh
+unzip master.zip
+```
+#### Linux
+```sh
+sudo apt-get install unzip
+unzip master.zip
+```
 
 ## Usage
-### Starting RESTapi
+### Starting REST API
 ```sh
-cd ~/Downloads/sullivanTeamviewerApp
+cd sullivanTeamviewerApp-master
 docker compose --profile dev up -d --build
 ```
 This will download all of the dependencies, run the unit and integration tests and finally start the api. The api will be hosted at localhost:8080.
 
-*If there is an issue running the docker-compose, be sure Docker Desktop is running.
+*If there is an issue running the docker compose, be sure Docker Desktop is running.
+If the issue persists, add the @Disabled annotation to the integration testing classes. 
+Java TestContainers can have issues with Docker containers due to trying to establish a Docker container in a Docker container.
+These can be run manually if Maven and Java are installed.
 
 ### Running tests
 ```sh
-cd ~/Downloads/sullivanTeamviewerApp
+cd sullivanTeamviewerApp-master
 docker compose --profile test up --build
 ```
 This will run the command 'mvn clean test' which will run all unit and integration tests.
@@ -53,7 +71,11 @@ This will run the command 'mvn clean test' which will run all unit and integrati
 
 ### Shutting down the application
 ```sh
-docker compose down
+docker compose --profile dev down
+```
+### or
+```sh
+docker compose --profile test down
 ```
 This will shut down the application and Docker containers.
 
