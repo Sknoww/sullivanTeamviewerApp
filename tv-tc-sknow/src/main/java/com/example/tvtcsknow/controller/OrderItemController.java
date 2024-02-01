@@ -1,5 +1,6 @@
 package com.example.tvtcsknow.controller;
 
+import com.example.tvtcsknow.dto.OrderItemCreateRequest;
 import com.example.tvtcsknow.model.OrderItem;
 import com.example.tvtcsknow.service.OrderItemService;
 import io.swagger.v3.oas.annotations.Operation;
@@ -31,8 +32,8 @@ public class OrderItemController {
 
     @PostMapping("")
     @Operation(summary = "Create new order item")
-    public OrderItem createOrderItem(@RequestBody OrderItem orderItem) {
-        return orderItemService.createOrderItem(orderItem);
+    public OrderItem createOrderItem(@RequestBody OrderItemCreateRequest request) {
+        return orderItemService.createOrderItem(request);
     }
 
     @PutMapping("/{id}")

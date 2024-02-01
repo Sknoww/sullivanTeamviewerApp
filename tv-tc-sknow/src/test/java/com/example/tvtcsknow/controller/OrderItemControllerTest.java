@@ -1,5 +1,6 @@
 package com.example.tvtcsknow.controller;
 
+import com.example.tvtcsknow.dto.OrderItemCreateRequest;
 import com.example.tvtcsknow.model.OrderItem;
 import com.example.tvtcsknow.service.OrderItemService;
 import org.junit.jupiter.api.AfterAll;
@@ -60,14 +61,14 @@ public class OrderItemControllerTest {
 
     @Test
     public void testCreateOrderItem() throws Exception {
-        when(mockOrderItemService.createOrderItem(any(OrderItem.class))).thenReturn(new OrderItem());
+        when(mockOrderItemService.createOrderItem(any(OrderItemCreateRequest.class))).thenReturn(new OrderItem());
 
         mockMvc.perform(post("/api/order-items")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content("{}"))
                 .andExpect(status().isOk());
 
-        verify(mockOrderItemService, times(1)).createOrderItem(any(OrderItem.class));
+        verify(mockOrderItemService, times(1)).createOrderItem(any(OrderItemCreateRequest.class));
     }
 
     @Test

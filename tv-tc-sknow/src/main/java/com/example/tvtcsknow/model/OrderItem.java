@@ -1,5 +1,6 @@
 package com.example.tvtcsknow.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 import lombok.Data;
 import lombok.Getter;
@@ -16,18 +17,29 @@ public class OrderItem {
 
         @Id
         @GeneratedValue(strategy = GenerationType.IDENTITY)
-        @Column(name = "id", nullable = false)
         private long id;
 
         @ManyToOne
-        @JoinColumn(name = "product_id", nullable = false)
+        @JoinColumn(name = "product_id")
         private Product product;
 
         @ManyToOne
-        @JoinColumn(name = "order_id", nullable = false)
+        @JoinColumn(name = "order_id")
+        @JsonIgnoreProperties("orderItems")
         private Order order;
 
         @Column(name = "quantity", nullable = false)
         private int quantity;
+
+        @Override
+        public String toString() {
+                return "OrderItem{" +
+                        "id=" + id +
+                        ", order=" + (order != null ? order.getId() : null) +
+                        ", product=" + (product != null ? product.getId() : null) +
+                        ", quantity=" + quantity +
+                        '}';
+        }
+
 
 }

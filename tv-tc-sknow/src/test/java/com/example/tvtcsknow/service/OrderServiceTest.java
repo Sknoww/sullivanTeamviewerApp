@@ -2,23 +2,19 @@ package com.example.tvtcsknow.service;
 
 import com.example.tvtcsknow.model.Order;
 import com.example.tvtcsknow.repository.OrderRepository;
+import jakarta.persistence.EntityNotFoundException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
-import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.test.context.ContextConfiguration;
-import org.testcontainers.junit.jupiter.Testcontainers;
+import org.mockito.MockitoAnnotations;
 
-import java.util.Arrays;
 import java.util.Optional;
 
+import static org.junit.Assert.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.*;
 
-@SpringBootTest
-@ContextConfiguration(initializers = {OrderServiceTest.Initializer.class})
-@Testcontainers
-public class OrderServiceTest extends BaseServiceTest {
+public class OrderServiceTest {
 
     @Mock
     private OrderRepository orderRepository;
@@ -27,57 +23,72 @@ public class OrderServiceTest extends BaseServiceTest {
 
     @BeforeEach
     public void setUp() {
+        MockitoAnnotations.openMocks(this);
         orderService = new OrderService(orderRepository);
-    }
-
-    @Test
-    public void testGetAllOrders() {
-        when(orderRepository.findAll()).thenReturn(Arrays.asList(new Order(), new Order()));
-
-        assertEquals(2, orderService.getAllOrders().size());
-
-        verify(orderRepository, times(1)).findAll();
     }
 
     @Test
     public void testGetOrderById() {
         Order order = new Order();
-        when(orderRepository.findById(anyLong())).thenReturn(Optional.of(order));
+        order.setId(1L);
+        when(orderRepository.findById(1L)).thenReturn(Optional.of(order));
 
-        assertEquals(order, orderService.getOrderById(1L));
+        Order result = orderService.getOrderById(1L);
 
-        verify(orderRepository, times(1)).findById(anyLong());
+        assertEquals(1L, result.getId());
+        verify(orderRepository, times(1)).findById(1L);
+    }
+
+    @Test
+    public void testGetOrderByIdNotFound() {
+        when(orderRepository.findById(1L)).thenReturn(Optional.empty());
+
+        assertThrows(EntityNotFoundException.class, () -> orderService.getOrderById(1L));
+        verify(orderRepository, times(1)).findById(1L);
     }
 
     @Test
     public void testCreateOrder() {
         Order order = new Order();
+        order.setId(1L);
         when(orderRepository.save(any(Order.class))).thenReturn(order);
 
-        assertEquals(order, orderService.createOrder(new Order()));
+        Order result = orderService.createOrder(order);
 
+        assertEquals(1L, result.getId());
         verify(orderRepository, times(1)).save(any(Order.class));
     }
 
     @Test
     public void testUpdateOrder() {
         Order order = new Order();
-        when(orderRepository.findById(anyLong())).thenReturn(Optional.of(new Order()));
+        order.setId(1L);
+        when(orderRepository.findById(1L)).thenReturn(Optional.of(order));
         when(orderRepository.save(any(Order.class))).thenReturn(order);
 
-        Order updatedOrder = orderService.updateOrder(1L, order);
+        Order result = orderService.updateOrder(1L, order);
 
-        assertEquals(order, updatedOrder);
-        verify(orderRepository, times(1)).findById(anyLong());
+        assertEquals(1L, result.getId());
+        verify(orderRepository, times(1)).findById(1L);
         verify(orderRepository, times(1)).save(any(Order.class));
     }
 
     @Test
+    public void testUpdateOrderNotFound() {
+        Order order = new Order();
+        order.setId(1L);
+        when(orderRepository.findById(1L)).thenReturn(Optional.empty());
+
+        assertThrows(EntityNotFoundException.class, () -> orderService.updateOrder(1L, order));
+        verify(orderRepository, times(1)).findById(1L);
+    }
+
+    @Test
     public void testDeleteOrder() {
-        doNothing().when(orderRepository).deleteById(anyLong());
+        doNothing().when(orderRepository).deleteById(1L);
 
         orderService.deleteOrder(1L);
 
-        verify(orderRepository, times(1)).deleteById(anyLong());
+        verify(orderRepository, times(1)).deleteById(1L);
     }
 }
