@@ -3,15 +3,11 @@ package com.example.tvtcsknow.model;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 import lombok.Data;
-import lombok.Getter;
 import lombok.NoArgsConstructor;
-import lombok.Setter;
 
 @Data
 @Entity
 @Table(name = "order_item")
-@Getter
-@Setter
 @NoArgsConstructor
 public class OrderItem {
 
@@ -31,6 +27,7 @@ public class OrderItem {
         @Column(name = "quantity", nullable = false)
         private int quantity;
 
+        // Necessary to avoid StackOverflow error when serializing
         @Override
         public String toString() {
                 return "OrderItem{" +

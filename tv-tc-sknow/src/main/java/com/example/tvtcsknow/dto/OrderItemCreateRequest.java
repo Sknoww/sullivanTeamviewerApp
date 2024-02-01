@@ -7,6 +7,8 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+// Utilized to resolve circular relationship between order and order-item
+
 @Getter
 @Setter
 @AllArgsConstructor

@@ -2,15 +2,11 @@ package com.example.tvtcsknow.model;
 
 import jakarta.persistence.*;
 import lombok.Data;
-import lombok.Getter;
 import lombok.NoArgsConstructor;
-import lombok.Setter;
 
 @Data
 @Entity
 @Table(name = "product")
-@Getter
-@Setter
 @NoArgsConstructor
 public class Product {
 

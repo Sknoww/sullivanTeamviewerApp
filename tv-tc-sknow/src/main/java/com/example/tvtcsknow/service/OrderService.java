@@ -34,7 +34,6 @@ public class OrderService {
     public Order updateOrder(long id, Order order) {
         log.info("Updating order with id: {}", id);
         Order orderToUpdate = orderRepository.findById(id).orElseThrow(() -> new EntityNotFoundException("Order not found"));
-        orderToUpdate.setOrderItems(order.getOrderItems());
         orderToUpdate.setCustomerName(order.getCustomerName());
         return orderRepository.save(orderToUpdate);
     }
