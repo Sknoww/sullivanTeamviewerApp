@@ -36,7 +36,7 @@ Once the download is complete, be sure to extract the zip.
 ### Starting RESTapi
 ```sh
 cd ~/Downloads/sullivanTeamviewerApp
-docker-compose --profile dev up --build
+docker compose --profile dev up -d --build
 ```
 This will download all of the dependencies, run the unit and integration tests and finally start the api. The api will be hosted at localhost:8080.
 
@@ -45,9 +45,17 @@ This will download all of the dependencies, run the unit and integration tests a
 ### Running tests
 ```sh
 cd ~/Downloads/sullivanTeamviewerApp
-docker-compose --profile test up --build
+docker compose --profile test up --build
 ```
 This will run the command 'mvn clean test' which will run all unit and integration tests.
+
+*This will show all of the logs so that you can see if the tests pass successfully. However, to exit you need to press Ctrl+C.
+
+### Shutting down the application
+```sh
+docker compose down
+```
+This will shut down the application and Docker containers.
 
 ### Manual testing
 The app can be manually tested after starting the app and hitting the url: localhost:8080
