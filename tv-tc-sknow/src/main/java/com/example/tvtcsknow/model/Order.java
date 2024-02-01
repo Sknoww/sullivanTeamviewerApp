@@ -1,29 +1,29 @@
 package com.example.tvtcsknow.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 import lombok.Data;
-import lombok.Getter;
 import lombok.NoArgsConstructor;
-import lombok.Setter;
 
 import java.util.List;
 
+// Table name had to be different from 'order' due to reserved keyword.
+
 @Data
 @Entity
-@Table(name = "order")
+@Table(name = "custom_order")
 @NoArgsConstructor
 public class Order {
 
     @Id
-    @Getter
-    @Setter
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id", nullable = false)
     private long id;
 
-    @Getter
-    @Setter
+    @Column(name = "customer_name", nullable = false)
+    private String customerName;
+
     @OneToMany(mappedBy = "order", cascade = CascadeType.ALL)
+    @JsonIgnoreProperties("order")
     private List<OrderItem> orderItems;
 
 }

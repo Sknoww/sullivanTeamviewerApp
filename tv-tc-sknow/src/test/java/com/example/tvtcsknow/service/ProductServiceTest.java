@@ -2,20 +2,18 @@ package com.example.tvtcsknow.service;
 
 import com.example.tvtcsknow.model.Product;
 import com.example.tvtcsknow.repository.ProductRepository;
+import jakarta.persistence.EntityNotFoundException;
 import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
-import org.springframework.boot.test.context.SpringBootTest;
+import org.mockito.MockitoAnnotations;
 
-import java.util.Arrays;
 import java.util.Optional;
 
+import static org.junit.Assert.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.*;
 
-@Disabled
-@SpringBootTest
 public class ProductServiceTest {
 
     @Mock
@@ -25,58 +23,75 @@ public class ProductServiceTest {
 
     @BeforeEach
     public void setUp() {
+        MockitoAnnotations.openMocks(this);
         productService = new ProductService(productRepository);
-    }
-
-    @Test
-    public void testGetAllProducts() {
-        when(productRepository.findAll()).thenReturn(Arrays.asList(new Product(), new Product()));
-
-        assertEquals(2, productService.getAllProducts().size());
-
-        verify(productRepository, times(1)).findAll();
     }
 
     @Test
     public void testGetProductById() {
         Product product = new Product();
-        when(productRepository.findById(anyLong())).thenReturn(Optional.of(product));
+        product.setId(1L);
+        when(productRepository.findById(1L)).thenReturn(Optional.of(product));
 
-        assertEquals(product, productService.getProductById(1L));
+        Product result = productService.getProductById(1L);
 
-        verify(productRepository, times(1)).findById(anyLong());
+        assertEquals(1L, result.getId());
+        verify(productRepository, times(1)).findById(1L);
+    }
+
+    @Test
+    public void testGetProductByIdNotFound() {
+        when(productRepository.findById(1L)).thenReturn(Optional.empty());
+
+        assertThrows(EntityNotFoundException.class, () -> productService.getProductById(1L));
+        verify(productRepository, times(1)).findById(1L);
     }
 
     @Test
     public void testCreateProduct() {
         Product product = new Product();
+        product.setId(1L);
         when(productRepository.save(any(Product.class))).thenReturn(product);
 
-        assertEquals(product, productService.createProduct(new Product()));
+        Product result = productService.createProduct(product);
 
+        assertEquals(1L, result.getId());
         verify(productRepository, times(1)).save(any(Product.class));
     }
 
     @Test
     public void testUpdateProduct() {
         Product product = new Product();
-        product.setName("New Product");
-        when(productRepository.findById(anyLong())).thenReturn(Optional.of(new Product()));
+        product.setId(1L);
+        product.setName("Product Name");
+        when(productRepository.findById(1L)).thenReturn(Optional.of(product));
         when(productRepository.save(any(Product.class))).thenReturn(product);
 
-        Product updatedProduct = productService.updateProduct(1L, product);
+        Product result = productService.updateProduct(1L, product);
 
-        assertEquals("New Product", updatedProduct.getName());
-        verify(productRepository, times(1)).findById(anyLong());
+        assertEquals(1L, result.getId());
+        assertEquals("Product Name", result.getName());
+        verify(productRepository, times(1)).findById(1L);
         verify(productRepository, times(1)).save(any(Product.class));
     }
 
     @Test
+    public void testUpdateProductNotFound() {
+        Product product = new Product();
+        product.setId(1L);
+        product.setName("Product Name");
+        when(productRepository.findById(1L)).thenReturn(Optional.empty());
+
+        assertThrows(EntityNotFoundException.class, () -> productService.updateProduct(1L, product));
+        verify(productRepository, times(1)).findById(1L);
+    }
+
+    @Test
     public void testDeleteProduct() {
-        doNothing().when(productRepository).deleteById(anyLong());
+        doNothing().when(productRepository).deleteById(1L);
 
         productService.deleteProduct(1L);
 
-        verify(productRepository, times(1)).deleteById(anyLong());
+        verify(productRepository, times(1)).deleteById(1L);
     }
 }

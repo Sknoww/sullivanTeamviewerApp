@@ -3,6 +3,9 @@ version: '3'
 services:
   db:
     image: 'postgres:latest'
+    profiles:
+      - dev
+      - test
     container_name: db
     environment:
       - POSTGRES_USER=compose-postgres
@@ -11,10 +14,12 @@ services:
       - 5432
   app:
     image: 'tv-tc-sknow:latest'
+    profiles:
+      - dev
     container_name: app
     build:
       context: ./tv-tc-sknow
-      dockerfile: Dockerfile
+      dockerfile: Dockerfile.dev
     ports:
       - 8080:8080
     depends_on:
@@ -25,3 +30,22 @@ services:
       - SPRING_DATASOURCE_PASSWORD=compose-postgres
       - SPRING_JPA_HIBERNATE_DDL_AUTO=update
       - SPRING_JPA_DATABASE_PLATFORM=org.hibernate.dialect.PostgreSQLDialect
+      - SPRING_JPA_PROPERTIES_HIBERNATE_GLOBALLY_QUOTED_IDENTIFIERS=true
+  test-app:
+    profiles:
+      - test
+    container_name: test-app
+    build:
+      context: ./tv-tc-sknow
+      dockerfile: Dockerfile.test
+    ports:
+      - 8080:8080
+    depends_on:
+      - db
+    environment:
+      - SPRING_DATASOURCE_URL=jdbc:postgresql://db:5432/compose-postgres
+      - SPRING_DATASOURCE_USERNAME=compose-postgres
+      - SPRING_DATASOURCE_PASSWORD=compose-postgres
+      - SPRING_JPA_HIBERNATE_DDL_AUTO=update
+      - SPRING_JPA_DATABASE_PLATFORM=org.hibernate.dialect.PostgreSQLDialect
+      - SPRING_JPA_PROPERTIES_HIBERNATE_GLOBALLY_QUOTED_IDENTIFIERS=true

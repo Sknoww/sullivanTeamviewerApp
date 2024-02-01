@@ -4,6 +4,7 @@ import com.example.tvtcsknow.model.Product;
 import com.example.tvtcsknow.service.ProductService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
@@ -25,7 +26,7 @@ public class ProductController {
 
     @GetMapping("/{id}")
     @Operation(summary = "Get product by id")
-    public Product getProductById(@PathVariable Long id) {
+    public Product getProductById(@PathVariable @NotNull Long id) {
         return productService.getProductById(id);
     }
 

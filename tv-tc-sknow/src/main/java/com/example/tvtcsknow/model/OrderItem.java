@@ -1,10 +1,9 @@
 package com.example.tvtcsknow.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 import lombok.Data;
-import lombok.Getter;
 import lombok.NoArgsConstructor;
-import lombok.Setter;
 
 @Data
 @Entity
@@ -13,27 +12,31 @@ import lombok.Setter;
 public class OrderItem {
 
         @Id
-        @Getter
-        @Setter
         @GeneratedValue(strategy = GenerationType.IDENTITY)
-        @Column(name = "id", nullable = false)
         private long id;
 
-        @Getter
-        @Setter
         @ManyToOne
-        @JoinColumn(name = "product_id", nullable = false)
+        @JoinColumn(name = "product_id")
         private Product product;
 
-        @Getter
-        @Setter
         @ManyToOne
-        @JoinColumn(name = "order_id", nullable = false)
+        @JoinColumn(name = "order_id")
+        @JsonIgnoreProperties("orderItems")
         private Order order;
 
-        @Getter
-        @Setter
         @Column(name = "quantity", nullable = false)
         private int quantity;
+
+        // Necessary to avoid StackOverflow error when serializing
+        @Override
+        public String toString() {
+                return "OrderItem{" +
+                        "id=" + id +
+                        ", order=" + (order != null ? order.getId() : null) +
+                        ", product=" + (product != null ? product.getId() : null) +
+                        ", quantity=" + quantity +
+                        '}';
+        }
+
 
 }
