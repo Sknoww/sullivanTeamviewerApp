@@ -11,8 +11,11 @@ Hunter Sullivan's Programming Challenge for Teamviewer
 - Docker installed and running
 - (Optional) Maven and Java installed and running (Only necessary if you want to run specific Maven commands. i.e. mvn clean install, mvn clean package, etc.)
 
-## OpenAPI Documentation
-OpenAPI generated documentation can be accessed at 'localhost:8080/v3/api-docs' after starting the app using the process explained below.
+### OpenAPI Documentation
+OpenAPI generated documentation can be accessed at the below url after starting the app using the process explained below.
+```sh
+localhost:8080/v3/api-docs
+```
 
 ## Installation
 
@@ -25,6 +28,7 @@ curl -L -O https://github.com/Sknoww/sullivanTeamviewerApp/archive/master.zip
 ```
 ### or
 Manual download: 
+[Click Here](https://github.com/Sknoww/sullivanTeamviewerApp/archive/master.zip)
 
 Once the download is complete, be sure to extract the zip.
 
