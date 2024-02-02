@@ -429,6 +429,3 @@ DELETE localhost:8080/api/order-items/1
 
 ### Metadata
 H. Sullivan - sknow.codes@gmail.com
-
-### License
-MIT License, reference `LICENSE` for details.
